@@ -1,0 +1,34 @@
+/* Suposición: existe una variable global o parámetro que indica la regla actual */
+reglaSecreta ∈ {"PAR", "MULTIPLO_3", "MAYOR_10"}  /* ejemplo */
+
+FUNCION verificarRegla(numero) → BOOLEANO:
+    /* Comprobar la regla actual */
+    si reglaSecreta = "PAR" entonces
+        /* número par: residuo 0 al dividir entre 2 */
+        si (numero % 2 = 0) entonces
+            retornar VERDADERO
+        sino
+            retornar FALSO
+        fin si
+
+    sino si reglaSecreta = "MULTIPLO_3" entonces
+        /* múltiplo de 3: residuo 0 al dividir entre 3 */
+        si (numero % 3 = 0) entonces
+            retornar VERDADERO
+        sino
+            retornar FALSO
+        fin si
+
+    sino si reglaSecreta = "MAYOR_10" entonces
+        /* mayor que 10 */
+        si (numero > 10) entonces
+            retornar VERDADERO
+        sino
+            retornar FALSO
+        fin si
+
+    sino
+        /* regla no reconocida: fallar por seguridad */
+        retornar FALSO
+    fin si
+FIN FUNCION

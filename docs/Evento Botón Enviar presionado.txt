@@ -1,0 +1,21 @@
+/* Evento: Botón "Enviar" presionado */
+ON_CLICK BotonEnviar:
+    textoEntrada ← leerTextoDelCampo()
+    
+    /* Validación: debe ser número (entero o real según tu necesidad) */
+    si NOT esNumero(textoEntrada) entonces
+        mostrarMensaje("Debe ingresar un número válido.")
+        retornar
+    fin si
+
+    numero ← convertirANumero(textoEntrada)
+
+    /* Llamar a la función que verifica la regla secreta */
+    cumple ← verificarRegla(numero)
+
+    si cumple = VERDADERO entonces
+        mostrarMensaje("¡Correcto!")
+    sino
+        mostrarMensaje("Incorrecto!")
+    fin si
+FIN ON_CLICK
