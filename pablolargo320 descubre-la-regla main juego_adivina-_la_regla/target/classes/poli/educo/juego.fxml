@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="poli.educo.JuegoController">
+
+    <children>
+
+        <VBox fx:id="exploracionPane" spacing="10" alignment="CENTER">
+            <children>
+
+                <Label text="Fase 1: exploración"
+                       style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+                <Label text="Ingresa números enteros y observa la salida del sistema."
+                       wrapText="true"/>
+
+                <TextField fx:id="inputUsuario" promptText="Número entero"/>
+                <Button text="Probar" onAction="#probarNumero"/>
+
+                <Label fx:id="outputSistema"/>
+                <Label fx:id="mensajeExploracionLabel"/>
+
+                <Button fx:id="btnYaConozcoLaRegla"
+                        text="Ya conozco la regla"
+                        onAction="#yaConozcoLaRegla"/>
+
+            </children>
+        </VBox>
+
+        <VBox fx:id="validacionPane" spacing="10" alignment="CENTER">
+            <children>
+
+                <Label text="Fase 2: validación"
+                       style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+                <Label text="Con los 4 números que te da el sistema, escribe las 4 salidas correctas."
+                       wrapText="true"/>
+
+                <Label fx:id="intentosLabel"/>
+                <Label fx:id="mensajeValidacionLabel"/>
+
+                <TextField fx:id="reglaField" promptText="Regla exacta"/>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Label fx:id="n1Label"/>
+                        <TextField fx:id="r1Field" prefWidth="60" promptText="Salida"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Label fx:id="n2Label"/>
+                        <TextField fx:id="r2Field" prefWidth="60" promptText="Salida"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Label fx:id="n3Label"/>
+                        <TextField fx:id="r3Field" prefWidth="60" promptText="Salida"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Label fx:id="n4Label"/>
+                        <TextField fx:id="r4Field" prefWidth="60" promptText="Salida"/>
+                    </children>
+                </HBox>
+
+                <Button text="Adivinar regla" onAction="#validar"/>
+                <Button fx:id="btnVolverExplorar" text="Volver a probar" onAction="#volverExplorar"/>
+
+            </children>
+        </VBox>
+
+        <Button fx:id="btnNuevaPartida" text="Nueva partida" onAction="#nuevaPartida"/>
+        <Button fx:id="btnVolverMenu" text="Volver al menú" onAction="#volverMenu"/>
+
+    </children>
+
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
+</VBox>
