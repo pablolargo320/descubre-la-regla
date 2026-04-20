@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="20"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="poli.edu.co.PrimaryController">
+
+   <children>
+
+      <Label text="Juego: Adivina la Regla"/>
+
+      <Button text="Iniciar Partida"
+              onAction="#iniciarPartida"/>
+
+      <Button text="Ver Reglas"
+              onAction="#abrirReglas"/>
+
+   </children>
+
+   <padding>
+      <Insets top="20" bottom="20" left="20" right="20"/>
+   </padding>
+
+</VBox>
