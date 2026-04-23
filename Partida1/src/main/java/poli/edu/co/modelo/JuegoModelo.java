@@ -1,45 +1,61 @@
 package poli.edu.co.modelo;
 
+import poli.edu.co.modelo.dao.JugadorDAO;
+import poli.edu.co.modelo.dao.JugadorDAOImpl;
+
 import java.util.Random;
 
 /**
- * Servicio/fachada del juego. Coordina la Partida activa y genera los mensajes
- * de retroalimentación que la vista necesita mostrar.
+ * Servicio / fachada principal del juego.
+ * Coordina la Partida activa, calcula el Puntaje y delega el registro
+ * del Jugador al repositorio correspondiente.
  */
 public class JuegoModelo {
 
     private static final Random RANDOM = new Random();
 
-    private Partida partida;
+    // ── Estado de la sesión ──────────────────────────────────────────────────
+    private Partida    partida;
+    private Nivel      nivelActual;
+    private Puntaje    puntaje    = Puntaje.cero();
+
+    // ── Mensajes para la vista ───────────────────────────────────────────────
     private String mensajeExploracion;
     private String mensajeValidacion;
     private String ultimaSalida;
+
+    // ── Acceso a datos ───────────────────────────────────────────────────────
+    private final JugadorDAO jugadorDAO = new JugadorDAOImpl();
 
     public JuegoModelo() {
         iniciarPartidaAleatoria();
     }
 
-    // -------------------------------------------------------------------------
-    // Ciclo de vida de la partida
-    // -------------------------------------------------------------------------
+    // ── Ciclo de vida ────────────────────────────────────────────────────────
 
-    /** Crea una nueva partida con nivel aleatorio. */
+    /** Nueva partida con nivel aleatorio (para el botón "Nueva partida"). */
     public void reiniciar() {
         iniciarPartidaAleatoria();
         ultimaSalida = "";
+        puntaje      = Puntaje.cero();
     }
 
-    /** Crea una nueva partida con el nivel indicado. */
+    /**
+     * Inicia una partida con el nivel elegido por el jugador.
+     * Crea una nueva Partida y resetea el puntaje.
+     */
     public void setNivel(Nivel nivel) {
-        partida = new Partida(new Regla(nivel));
-        resetMensajes();
+        nivelActual  = nivel;
+        partida      = new Partida(new Regla(nivel));
+        puntaje      = Puntaje.cero();
         ultimaSalida = "";
+        resetMensajes();
     }
 
     private void iniciarPartidaAleatoria() {
         Nivel[] niveles = Nivel.values();
-        Nivel nivel = niveles[RANDOM.nextInt(niveles.length)];
-        partida = new Partida(new Regla(nivel));
+        nivelActual = niveles[RANDOM.nextInt(niveles.length)];
+        partida     = new Partida(new Regla(nivelActual));
         resetMensajes();
     }
 
@@ -48,9 +64,7 @@ public class JuegoModelo {
         mensajeValidacion  = "";
     }
 
-    // -------------------------------------------------------------------------
-    // Lógica de juego (delega a Partida)
-    // -------------------------------------------------------------------------
+    // ── Lógica de juego (delega a Partida) ───────────────────────────────────
 
     public int aplicarRegla(int x) {
         return partida.aplicarRegla(x);
@@ -76,31 +90,53 @@ public class JuegoModelo {
         return partida.verificarSalidas(respuestas);
     }
 
+    /** Registra un fallo y calcula el puntaje si la partida termina. */
     public void registrarIntentoFallido() {
         boolean perdio = partida.registrarIntentoFallido();
         if (perdio) {
+            puntaje           = Puntaje.cero();
             mensajeValidacion = "Perdiste. La regla era: " + partida.getExpresionRegla();
         } else {
             mensajeValidacion = "Incorrecto. Intentos restantes: " + partida.getIntentosRestantes();
         }
     }
 
+    /** Marca la victoria y calcula el puntaje final. */
     public void ganar() {
         partida.ganar();
+        puntaje           = Puntaje.calcular(partida.getIntentosRestantes(), true);
         mensajeValidacion = "¡Correcto! Descubriste la regla: " + partida.getExpresionRegla();
     }
 
-    // -------------------------------------------------------------------------
-    // Getters (delegan al estado de Partida o al propio servicio)
-    // -------------------------------------------------------------------------
+    // ── Registro del jugador ─────────────────────────────────────────────────
 
-    public boolean isModoValidacion()     { return partida.isModoValidacion(); }
-    public boolean isTerminado()          { return partida.isTerminada(); }
-    public int getIntentosRestantes()     { return partida.getIntentosRestantes(); }
-    public int[] getEntradasReto()        { return partida.getEntradasReto(); }
-    public String getMensajeExploracion() { return mensajeExploracion; }
-    public String getMensajeValidacion()  { return mensajeValidacion; }
-    public String getUltimaSalida()       { return ultimaSalida; }
+    /**
+     * Crea un Jugador con el nombre dado y lo persiste vía DAO.
+     *
+     * @throws IllegalArgumentException si el nombre es nulo o vacío
+     * @throws RuntimeException         si ocurre un error de persistencia
+     */
+    public void guardarJugador(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre del jugador no puede estar vacío.");
+        }
+        Jugador jugador = new Jugador(nombre.trim(), puntaje.getValor(), nivelActual.name());
+        jugadorDAO.guardar(jugador);
+    }
+
+    // ── Getters ──────────────────────────────────────────────────────────────
+
+    public boolean isModoValidacion()      { return partida.isModoValidacion(); }
+    public boolean isTerminado()           { return partida.isTerminada(); }
+    public boolean isUltimaPartidaGanada() { return partida.isGanada(); }
+    public int     getIntentosRestantes()  { return partida.getIntentosRestantes(); }
+    public int[]   getEntradasReto()       { return partida.getEntradasReto(); }
+    public Nivel   getNivelActual()        { return nivelActual; }
+    public Puntaje getPuntaje()            { return puntaje; }
+
+    public String getMensajeExploracion()  { return mensajeExploracion; }
+    public String getMensajeValidacion()   { return mensajeValidacion; }
+    public String getUltimaSalida()        { return ultimaSalida; }
 
     public void setUltimaSalida(String salida)        { this.ultimaSalida = salida; }
     public void setMensajeExploracion(String mensaje) { this.mensajeExploracion = mensaje; }

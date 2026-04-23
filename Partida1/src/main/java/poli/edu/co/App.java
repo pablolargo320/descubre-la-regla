@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import poli.edu.co.modelo.JuegoModelo;
+import poli.edu.co.modelo.dao.ConexionBD;
 
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        ConexionBD.inicializarTablas();   // crea la tabla si no existe
         modelo = new JuegoModelo();
         scene = new Scene(loadFXML("primary"), 660, 520);
         stage.setTitle("Adivina la Regla");

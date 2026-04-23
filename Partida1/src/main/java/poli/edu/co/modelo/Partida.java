@@ -14,6 +14,7 @@ public class Partida {
     private final Regla regla;
     private boolean modoValidacion;
     private boolean terminada;
+    private boolean ganada;           // true solo si el jugador acertó
     private int intentosRestantes;
     private final int[] entradasReto;
     private boolean retoGenerado;
@@ -68,6 +69,7 @@ public class Partida {
 
     public void ganar() {
         terminada = true;
+        ganada    = true;
     }
 
     public String getExpresionRegla() {
@@ -76,6 +78,7 @@ public class Partida {
 
     public boolean isModoValidacion()   { return modoValidacion; }
     public boolean isTerminada()        { return terminada; }
+    public boolean isGanada()           { return ganada; }
     public int getIntentosRestantes()   { return intentosRestantes; }
     public int[] getEntradasReto()      { return entradasReto; }
 }

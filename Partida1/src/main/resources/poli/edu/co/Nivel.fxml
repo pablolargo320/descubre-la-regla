@@ -20,17 +20,17 @@
       <Label text="Elige la dificultad de la regla matemática"
              style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
 
-      <Button text="Fácil  —  f(x) = x × 2"
+      <Button text="Fácil"
               onAction="#seleccionarFacil"
               prefWidth="220"
               style="-fx-background-color: #388e3c; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>
 
-      <Button text="Intermedio  —  f(x) = x + 5"
+      <Button text="Intermedio"
               onAction="#seleccionarIntermedio"
               prefWidth="220"
               style="-fx-background-color: #1565c0; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>
 
-      <Button text="Difícil  —  f(x) = x × 3"
+      <Button text="Difícil"
               onAction="#seleccionarDificil"
               prefWidth="220"
               style="-fx-background-color: #f9a825; -fx-text-fill: #0d1117; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>

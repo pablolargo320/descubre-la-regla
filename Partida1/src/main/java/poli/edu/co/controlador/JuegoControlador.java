@@ -10,27 +10,35 @@ import poli.edu.co.modelo.JuegoModelo;
 
 import java.io.IOException;
 
+/**
+ * Controlador de la pantalla de juego.
+ * Solo gestiona eventos de UI y delega toda la lógica a JuegoModelo.
+ * Cuando la partida termina (victoria o derrota), navega a Resultado.fxml.
+ */
 public class JuegoControlador {
 
+    // ── Fase 1: Exploración ──────────────────────────────────────────────────
     @FXML private TextField inputUsuario;
     @FXML private Label     outputSistema;
     @FXML private Label     mensajeExploracionLabel;
+    @FXML private Button    btnYaConozcoLaRegla;
+    @FXML private VBox      exploracionPane;
 
+    // ── Fase 2: Validación ───────────────────────────────────────────────────
     @FXML private TextField reglaField;
     @FXML private Label     intentosLabel;
     @FXML private Label     mensajeValidacionLabel;
-
     @FXML private Label     n1Label, n2Label, n3Label, n4Label;
-    @FXML private TextField r1Field, r2Field, r3Field, r4Field;
+    @FXML private TextField r1Field,  r2Field,  r3Field,  r4Field;
+    @FXML private Button    btnVolverExplorar;
+    @FXML private VBox      validacionPane;
 
-    @FXML private VBox   exploracionPane;
-    @FXML private VBox   validacionPane;
-    @FXML private Button btnYaConozcoLaRegla;
-    @FXML private Button btnVolverExplorar;
-    @FXML private Button btnNuevaPartida;
+    // ── Global ───────────────────────────────────────────────────────────────
     @FXML private Button btnVolverMenu;
 
     private JuegoModelo modelo;
+
+    // ── Inicialización ───────────────────────────────────────────────────────
 
     @FXML
     private void initialize() {
@@ -38,9 +46,10 @@ public class JuegoControlador {
         actualizarVista();
     }
 
+    // ── Sincronización de vista ──────────────────────────────────────────────
+
     private void actualizarVista() {
         boolean enValidacion = modelo.isModoValidacion();
-        boolean terminado    = modelo.isTerminado();
 
         exploracionPane.setVisible(!enValidacion);
         exploracionPane.setManaged(!enValidacion);
@@ -58,13 +67,13 @@ public class JuegoControlador {
         n3Label.setText(String.valueOf(entradas[2]));
         n4Label.setText(String.valueOf(entradas[3]));
 
-        if (terminado) bloquear();
-
-        btnVolverExplorar.setVisible(!terminado && enValidacion);
-        btnVolverExplorar.setManaged(!terminado && enValidacion);
-        btnYaConozcoLaRegla.setVisible(!enValidacion && !terminado);
-        btnYaConozcoLaRegla.setManaged(!enValidacion && !terminado);
+        btnVolverExplorar.setVisible(enValidacion);
+        btnVolverExplorar.setManaged(enValidacion);
+        btnYaConozcoLaRegla.setVisible(!enValidacion);
+        btnYaConozcoLaRegla.setManaged(!enValidacion);
     }
+
+    // ── Eventos: Fase 1 ──────────────────────────────────────────────────────
 
     @FXML
     private void probarNumero() {
@@ -84,16 +93,20 @@ public class JuegoControlador {
         actualizarVista();
     }
 
+    // ── Eventos: Fase 2 ──────────────────────────────────────────────────────
+
     @FXML
-    private void validar() {
+    private void validar() throws IOException {
         if (modelo.isTerminado()) return;
 
+        // Opción A: el jugador escribió la regla en texto
         if (modelo.verificarTextoRegla(reglaField.getText())) {
             modelo.ganar();
-            actualizarVista();
+            App.setRoot("Resultado");
             return;
         }
 
+        // Opción B: el jugador ingresó las 4 salidas numéricas
         try {
             int[] respuestas = {
                 Integer.parseInt(r1Field.getText().trim()),
@@ -104,62 +117,31 @@ public class JuegoControlador {
 
             if (modelo.verificarSalidas(respuestas)) {
                 modelo.ganar();
+                App.setRoot("Resultado");
             } else {
                 modelo.registrarIntentoFallido();
+                if (modelo.isTerminado()) {
+                    App.setRoot("Resultado");   // perdió → ir a pantalla de resultado
+                } else {
+                    actualizarVista();          // aún quedan intentos
+                }
             }
 
         } catch (NumberFormatException e) {
             mensajeValidacionLabel.setText("Completa todos los campos con números enteros.");
         }
-
-        actualizarVista();
     }
 
     @FXML
     private void volverExplorar() {
-        if (!modelo.isTerminado()) {
-            modelo.volverExploracion();
-            actualizarVista();
-        }
-    }
-
-    @FXML
-    private void nuevaPartida() {
-        modelo.reiniciar();
-        desbloquear();
-        limpiarCampos();
+        modelo.volverExploracion();
         actualizarVista();
     }
+
+    // ── Eventos: Global ──────────────────────────────────────────────────────
 
     @FXML
     private void volverMenu() throws IOException {
         App.setRoot("primary");
-    }
-
-    private void bloquear() {
-        inputUsuario.setDisable(true);
-        r1Field.setDisable(true);
-        r2Field.setDisable(true);
-        r3Field.setDisable(true);
-        r4Field.setDisable(true);
-        reglaField.setDisable(true);
-    }
-
-    private void desbloquear() {
-        inputUsuario.setDisable(false);
-        r1Field.setDisable(false);
-        r2Field.setDisable(false);
-        r3Field.setDisable(false);
-        r4Field.setDisable(false);
-        reglaField.setDisable(false);
-    }
-
-    private void limpiarCampos() {
-        inputUsuario.clear();
-        r1Field.clear();
-        r2Field.clear();
-        r3Field.clear();
-        r4Field.clear();
-        reglaField.clear();
     }
 }

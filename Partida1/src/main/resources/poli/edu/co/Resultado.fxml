@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="16"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="poli.edu.co.controlador.ResultadoControlador"
+      style="-fx-background-color: #1a2332;"
+      prefWidth="660" prefHeight="520">
+
+   <padding>
+      <Insets top="28" bottom="28" left="50" right="50"/>
+   </padding>
+
+   <children>
+
+      <!-- ===== TÍTULO ===== -->
+      <Label text="Resultado de la Partida"
+             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 20px;
+                    -fx-font-weight: bold; -fx-text-fill: #f9a825;"/>
+
+      <!-- ===== RESULTADO: GANASTE / PERDISTE ===== -->
+      <Label fx:id="resultadoLabel"/>
+
+      <!-- ===== TARJETA DE ESTADÍSTICAS ===== -->
+      <VBox alignment="CENTER" spacing="8"
+            style="-fx-background-color: #263238;
+                   -fx-background-radius: 8;
+                   -fx-border-color: #546e7a;
+                   -fx-border-radius: 8;
+                   -fx-border-width: 1;">
+         <padding>
+            <Insets top="16" bottom="16" left="24" right="24"/>
+         </padding>
+         <children>
+            <Label fx:id="nivelLabel"
+                   style="-fx-font-family: 'Times New Roman'; -fx-font-size: 13px;
+                          -fx-text-fill: #b0bec5;"/>
+            <Label fx:id="puntajeLabel"
+                   style="-fx-font-family: 'Times New Roman'; -fx-font-size: 26px;
+                          -fx-font-weight: bold; -fx-text-fill: #f9a825;"/>
+         </children>
+      </VBox>
+
+      <!-- ===== SEPARADOR ===== -->
+      <Separator style="-fx-background-color: #37474f;"/>
+
+      <!-- ===== SECCIÓN REGISTRO ===== -->
+      <Label text="¿Deseas guardar tu puntaje?"
+             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px;
+                    -fx-text-fill: #eceff1;"/>
+
+      <!-- Campo de nombre (Escenario 1) -->
+      <HBox alignment="CENTER" spacing="10">
+         <children>
+            <Label text="Nombre:"
+                   style="-fx-font-family: 'Times New Roman'; -fx-font-size: 13px;
+                          -fx-text-fill: #b0bec5;"/>
+            <TextField fx:id="nombreField"
+                       promptText="Ingresa tu nombre"
+                       prefWidth="220"
+                       style="-fx-background-color: #0d1117;
+                              -fx-text-fill: #eceff1;
+                              -fx-border-color: #546e7a;
+                              -fx-border-radius: 4;
+                              -fx-background-radius: 4;
+                              -fx-font-family: 'Times New Roman';
+                              -fx-font-size: 13px;
+                              -fx-prompt-text-fill: #546e7a;"/>
+         </children>
+      </HBox>
+
+      <!-- Mensaje de error (Escenario 3) -->
+      <Label fx:id="errorNombreLabel"
+             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px;
+                    -fx-text-fill: #ef5350;"
+             visible="false" managed="false"/>
+
+      <!-- Botón guardar (Escenario 2) -->
+      <Button fx:id="btnGuardar"
+              text="Guardar Puntaje"
+              onAction="#guardar"
+              prefWidth="180"
+              style="-fx-background-color: #1565c0;
+                     -fx-text-fill: white;
+                     -fx-font-family: 'Times New Roman';
+                     -fx-font-size: 13px;
+                     -fx-font-weight: bold;
+                     -fx-padding: 9 20;
+                     -fx-background-radius: 5;
+                     -fx-cursor: hand;"/>
+
+      <!-- Confirmación de guardado -->
+      <Label fx:id="confirmacionLabel"
+             text="Puntaje guardado exitosamente"
+             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 13px;
+                    -fx-text-fill: #4caf50; -fx-font-weight: bold;"
+             visible="false" managed="false"/>
+
+      <!-- ===== SEPARADOR ===== -->
+      <Separator style="-fx-background-color: #37474f;"/>
+
+      <!-- ===== NAVEGACIÓN ===== -->
+      <HBox alignment="CENTER" spacing="20">
+         <children>
+            <Button text="Nueva Partida"
+                    onAction="#nuevaPartida"
+                    prefWidth="160"
+                    style="-fx-background-color: #f9a825;
+                           -fx-text-fill: #0d1117;
+                           -fx-font-family: 'Times New Roman';
+                           -fx-font-size: 13px;
+                           -fx-font-weight: bold;
+                           -fx-padding: 9 18;
+                           -fx-background-radius: 5;
+                           -fx-cursor: hand;"/>
+            <Button text="Volver al Menú"
+                    onAction="#volverMenu"
+                    prefWidth="160"
+                    style="-fx-background-color: #546e7a;
+                           -fx-text-fill: #eceff1;
+                           -fx-font-family: 'Times New Roman';
+                           -fx-font-size: 13px;
+                           -fx-padding: 9 18;
+                           -fx-background-radius: 5;
+                           -fx-cursor: hand;"/>
+         </children>
+      </HBox>
+
+   </children>
+
+</VBox>
