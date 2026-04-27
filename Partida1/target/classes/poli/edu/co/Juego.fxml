@@ -132,7 +132,6 @@
                    style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
 
             <TextField fx:id="reglaField"
-                       promptText="x*2  /  x+5  /  x*3"
                        prefWidth="210"
                        style="-fx-background-color: #0d1117; -fx-text-fill: #eceff1; -fx-border-color: #546e7a; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-prompt-text-fill: #546e7a;"/>
 

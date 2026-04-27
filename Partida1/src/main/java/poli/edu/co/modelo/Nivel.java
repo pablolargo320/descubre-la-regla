@@ -1,18 +1,25 @@
 package poli.edu.co.modelo;
-
 public enum Nivel {
 
-    FACIL("x*2") {
+    FACIL("x * 2") {
         @Override
-        public int aplicar(int x) { return x * 2; }
+        public int aplicar(int x) { 
+            return x * 2; 
+        }
     },
-    INTERMEDIO("x+5") {
+
+    INTERMEDIO("x * 2 + 5") {
         @Override
-        public int aplicar(int x) { return x + 5; }
+        public int aplicar(int x) { 
+            return x * 2 + 5; 
+        }
     },
-    DIFICIL("x*3") {
+
+    DIFICIL("x^2 + 10") {
         @Override
-        public int aplicar(int x) { return x * 3; }
+        public int aplicar(int x) { 
+            return (x * x) + 10; 
+        }
     };
 
     private final String expresion;
@@ -26,4 +33,5 @@ public enum Nivel {
     public String getExpresion() {
         return expresion;
     }
+
 }
