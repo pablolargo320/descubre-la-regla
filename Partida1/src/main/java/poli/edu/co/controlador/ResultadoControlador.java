@@ -5,14 +5,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import poli.edu.co.App;
-import poli.edu.co.modelo.JuegoModelo;
+import poli.edu.co.modelo.Jugador;
+import poli.edu.co.modelo.Partida;
 
 import java.io.IOException;
 
 /**
  * Controlador de la pantalla de resultado.
- * Muestra puntaje y nivel, solicita el nombre del jugador y gestiona el guardado.
- * No contiene lógica de negocio: delega todo a JuegoModelo.
+ * Muestra el resultado final, solicita el nombre del jugador y gestiona el guardado.
+ *
+ * Responsabilidades (MVC):
+ *  - Construir los mensajes visuales a partir del estado del modelo.
+ *  - Validar la entrada del usuario antes de pasar datos al modelo.
+ *  - Crear la entidad Jugador en el controlador (new aquí, no en el modelo).
+ *  - Delegar el guardado al modelo vía inyección del objeto ya construido.
  *
  * Escenarios BDD cubiertos:
  *  - Escenario 1: muestra campo de nombre al cargar la pantalla.
@@ -22,44 +28,46 @@ import java.io.IOException;
  */
 public class ResultadoControlador {
 
-    // ── Vista ────────────────────────────────────────────────────────────────
     @FXML private Label     resultadoLabel;
     @FXML private Label     nivelLabel;
     @FXML private Label     puntajeLabel;
 
-    @FXML private TextField nombreField;          // Escenario 1
-    @FXML private Label     errorNombreLabel;     // Escenario 3
-    @FXML private Button    btnGuardar;           // Escenario 2
-    @FXML private Label     confirmacionLabel;    // feedback post-guardado
+    @FXML private TextField nombreField;       // Escenario 1
+    @FXML private Label     errorNombreLabel;  // Escenario 3
+    @FXML private Button    btnGuardar;        // Escenario 2
+    @FXML private Label     confirmacionLabel;
 
-    private JuegoModelo modelo;
+    private Partida partida;
 
     // ── Inicialización ───────────────────────────────────────────────────────
 
     @FXML
     private void initialize() {
-        modelo = App.getModelo();
+        partida = App.getPartida();
         mostrarResultado();
     }
 
-    // ── Sincronización de vista ──────────────────────────────────────────────
+    // ── Actualización de vista ───────────────────────────────────────────────
 
     private void mostrarResultado() {
-        boolean gano = modelo.isUltimaPartidaGanada();
+        boolean gano = partida.isGanada();
 
-        // Resultado textual y color según victoria/derrota
+        // Texto y estilo visual: construidos en el controlador
         if (gano) {
             resultadoLabel.setText("¡GANASTE!");
             resultadoLabel.setStyle(
-                "-fx-text-fill: #4caf50; -fx-font-size: 28px; -fx-font-weight: bold;");
+                "-fx-text-fill: #3fb950; -fx-font-size: 30px; -fx-font-weight: bold;"
+                + "-fx-font-family: 'Impact', 'Arial Black';");
         } else {
             resultadoLabel.setText("PERDISTE");
             resultadoLabel.setStyle(
-                "-fx-text-fill: #ef5350; -fx-font-size: 28px; -fx-font-weight: bold;");
+                "-fx-text-fill: #f85149; -fx-font-size: 30px; -fx-font-weight: bold;"
+                + "-fx-font-family: 'Impact', 'Arial Black';");
         }
 
-        nivelLabel.setText("Nivel jugado: " + modelo.getNivelActual().name());
-        puntajeLabel.setText("Puntaje: " + modelo.getPuntaje());   // usa Puntaje.toString()
+        // Datos provenientes del modelo (sin formato propio)
+        nivelLabel.setText("Nivel jugado: " + partida.getNivel().name());
+        puntajeLabel.setText(partida.getPuntaje().toString());
 
         errorNombreLabel.setVisible(false);
         errorNombreLabel.setManaged(false);
@@ -70,7 +78,12 @@ public class ResultadoControlador {
     // ── Eventos ──────────────────────────────────────────────────────────────
 
     /**
-     * Escenario 2 y 3: valida el nombre e intenta guardar.
+     * Escenarios 2, 3 y 4: valida el nombre, crea la entidad Jugador
+     * en el controlador (new aquí) y delega el guardado al modelo.
+     *
+     * Nota de arquitectura:
+     *  'new Jugador(...)' está AQUÍ (en el controlador), no en Partida.
+     *  El modelo recibe el objeto ya construido mediante guardarJugador(Jugador).
      */
     @FXML
     private void guardar() {
@@ -84,15 +97,21 @@ public class ResultadoControlador {
             return;
         }
 
-        // Escenario 4 y 2: nombre válido → guardar
         errorNombreLabel.setVisible(false);
         errorNombreLabel.setManaged(false);
 
         try {
-            modelo.guardarJugador(nombre);           // lógica en el modelo
+            // Creación de la entidad en el controlador (new aquí, no en el modelo)
+            Jugador jugador = new Jugador(               // ← new en el controlador
+                nombre,
+                partida.getPuntaje().getValor(),
+                partida.getNivel().name()
+            );
+            partida.guardarJugador(jugador);             // modelo recibe el objeto ya construido
+
             confirmacionLabel.setVisible(true);
             confirmacionLabel.setManaged(true);
-            btnGuardar.setDisable(true);             // evitar doble guardado
+            btnGuardar.setDisable(true);                 // evitar doble guardado
             nombreField.setDisable(true);
         } catch (RuntimeException e) {
             errorNombreLabel.setText("Error al guardar. Intente de nuevo.");

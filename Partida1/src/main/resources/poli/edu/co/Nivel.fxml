@@ -5,40 +5,40 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20"
+<VBox alignment="CENTER" spacing="22"
       xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="poli.edu.co.controlador.NivelControlador"
-      style="-fx-background-color: #1a2332;"
+      styleClass="pantalla"
       prefWidth="660" prefHeight="520">
 
    <children>
 
       <Label text="Selecciona el Nivel"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9a825;"/>
+             styleClass="titulo"/>
 
       <Label text="Elige la dificultad de la regla matemática"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="subtitulo"/>
 
-      <Button text="Fácil"
+      <Button text="FÁCIL"
               onAction="#seleccionarFacil"
-              prefWidth="220"
-              style="-fx-background-color: #388e3c; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+              prefWidth="250"
+              styleClass="btn-inicio"/>
 
-      <Button text="Intermedio"
+      <Button text="INTERMEDIO"
               onAction="#seleccionarIntermedio"
-              prefWidth="220"
-              style="-fx-background-color: #1565c0; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+              prefWidth="250"
+              styleClass="btn-intermedio"/>
 
-      <Button text="Difícil"
+      <Button text="DIFÍCIL"
               onAction="#seleccionarDificil"
-              prefWidth="220"
-              style="-fx-background-color: #f9a825; -fx-text-fill: #0d1117; -fx-font-family: 'Times New Roman'; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+              prefWidth="250"
+              styleClass="btn-peligro"/>
 
-      <Button text="Volver al menú"
+      <Button text="← Volver al menú"
               onAction="#volverMenu"
-              prefWidth="160"
-              style="-fx-background-color: #546e7a; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-padding: 7 14; -fx-background-radius: 5;"/>
+              prefWidth="190"
+              styleClass="btn-neutro"/>
 
    </children>
 

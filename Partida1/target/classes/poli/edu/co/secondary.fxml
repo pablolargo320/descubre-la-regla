@@ -5,54 +5,54 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="12"
+<VBox alignment="CENTER" spacing="14"
       xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="poli.edu.co.controlador.ReglasControlador"
-      style="-fx-background-color: #1a2332;"
+      styleClass="pantalla"
       prefWidth="660" prefHeight="520">
 
    <children>
 
       <Label text="Reglas del Juego"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9a825;"/>
+             styleClass="titulo"/>
 
       <Label text="Objetivo:"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #90caf9;"/>
+             styleClass="titulo-fase"/>
 
-      <Label text="Descubrir la regla que el sistema usa para transformar números enteros."
+      <Label text="Descubrir la regla matemática que el sistema usa para transformar números enteros."
              wrapText="true" maxWidth="520"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="texto"/>
 
       <Label text="Fase 1 — Exploración:"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #90caf9;"/>
+             styleClass="titulo-fase"/>
 
       <Label text="Ingresa números enteros. El sistema te devuelve un resultado según una regla oculta. Prueba cuantos números quieras para analizar el patrón. Cuando creas entender la regla, pasa a la siguiente fase."
              wrapText="true" maxWidth="520"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="texto"/>
 
       <Label text="Fase 2 — Validación:"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #90caf9;"/>
+             styleClass="titulo-fase"/>
 
       <Label text="El sistema te dará 4 números. Escribe la salida correcta para cada uno. También puedes escribir la regla directamente si estás seguro."
              wrapText="true" maxWidth="520"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="texto"/>
 
       <Label text="Intentos:"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #90caf9;"/>
+             styleClass="titulo-fase"/>
 
       <Label text="Solo tienes 3 intentos. Si los agotas sin acertar, pierdes la partida."
              wrapText="true" maxWidth="520"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="msg-error"/>
 
       <Label text="Victoria: aciertas todas las salidas o escribes la regla correctamente."
              wrapText="true" maxWidth="520"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-text-fill: #eceff1;"/>
+             styleClass="msg-exito"/>
 
-      <Button text="Volver al menú"
+      <Button text="← Volver al menú"
               onAction="#volverMenu"
-              prefWidth="180"
-              style="-fx-background-color: #1565c0; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 13px; -fx-padding: 8 16; -fx-background-radius: 5;"/>
+              prefWidth="200"
+              styleClass="btn-neutro"/>
 
    </children>
 

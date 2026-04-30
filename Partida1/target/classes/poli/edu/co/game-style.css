@@ -1,0 +1,312 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   game-style.css  —  Adivina la Regla
+   Tema: dark game-style con acentos vibrantes
+   Aplicado globalmente desde App.java (scene.getStylesheets())
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Fondo base (se aplica al root de la escena y a VBox raíces) ────────── */
+.root {
+    -fx-background-color: #0d1117;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+}
+
+.pantalla {
+    -fx-background-color: #0d1117;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIPOGRAFÍA
+═══════════════════════════════════════════════════════════════════════════ */
+
+.titulo {
+    -fx-font-family: "Impact", "Arial Black", sans-serif;
+    -fx-font-size: 36px;
+    -fx-text-fill: #f0a500;
+    -fx-effect: dropshadow(gaussian, #f0a50055, 12, 0.5, 0, 3);
+}
+
+.subtitulo {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #8b949e;
+}
+
+.titulo-fase {
+    -fx-font-family: "Impact", "Arial Black", sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #388bfd;
+}
+
+.titulo-resultado {
+    -fx-font-family: "Impact", "Arial Black", sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #f0a500;
+}
+
+.texto {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #8b949e;
+}
+
+.texto-hint {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-fill: #c9d1d9;
+}
+
+/* Salida del sistema: fuente monoespaciada para resultados matemáticos */
+.texto-salida {
+    -fx-font-family: "Courier New", Courier, monospace;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e6edf3;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PANELES / TARJETAS
+═══════════════════════════════════════════════════════════════════════════ */
+
+.card {
+    -fx-background-color: #161b22;
+    -fx-background-radius: 8;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOTONES
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* Botón principal de inicio — verde vibrante */
+.btn-inicio {
+    -fx-background-color: #238636;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 13 30;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #2ea043;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-inicio:hover {
+    -fx-background-color: #2ea043;
+    -fx-effect: dropshadow(gaussian, #2ea04366, 8, 0.4, 0, 0);
+}
+
+/* Botón de acción secundaria — azul */
+.btn-accion {
+    -fx-background-color: #1f6feb;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #388bfd;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-accion:hover {
+    -fx-background-color: #388bfd;
+    -fx-effect: dropshadow(gaussian, #388bfd55, 8, 0.4, 0, 0);
+}
+
+/* Botón dorado — destacado (guardar, ya conozco la regla) */
+.btn-oro {
+    -fx-background-color: #f0a500;
+    -fx-text-fill: #0d1117;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-oro:hover {
+    -fx-background-color: #ffb700;
+    -fx-effect: dropshadow(gaussian, #f0a50066, 10, 0.5, 0, 0);
+}
+
+/* Botón de éxito / confirmar / validar */
+.btn-exito {
+    -fx-background-color: #1b5e20;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #2e7d32;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-exito:hover {
+    -fx-background-color: #2e7d32;
+}
+
+/* Botón neutro / volver */
+.btn-neutro {
+    -fx-background-color: #21262d;
+    -fx-text-fill: #c9d1d9;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 12px;
+    -fx-padding: 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-neutro:hover {
+    -fx-background-color: #30363d;
+    -fx-text-fill: #e6edf3;
+}
+
+/* Botón peligro — difícil / rojo */
+.btn-peligro {
+    -fx-background-color: #6e1c1c;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #da3633;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-peligro:hover {
+    -fx-background-color: #da3633;
+    -fx-effect: dropshadow(gaussian, #da363366, 8, 0.4, 0, 0);
+}
+
+/* Nivel INTERMEDIO — azul-violeta */
+.btn-intermedio {
+    -fx-background-color: #1a237e;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #3949ab;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-intermedio:hover {
+    -fx-background-color: #3949ab;
+    -fx-effect: dropshadow(gaussian, #3949ab66, 8, 0.4, 0, 0);
+}
+
+/* Botón probar — ámbar / pequeño */
+.btn-probar {
+    -fx-background-color: #e65100;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-probar:hover {
+    -fx-background-color: #f4511e;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CAMPOS DE TEXTO
+═══════════════════════════════════════════════════════════════════════════ */
+
+.campo-texto {
+    -fx-background-color: #0a0e1a;
+    -fx-text-fill: #e6edf3;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 13px;
+    -fx-prompt-text-fill: #484f58;
+    -fx-padding: 7 12;
+}
+.campo-texto:focused {
+    -fx-border-color: #388bfd;
+    -fx-background-color: #0d1117;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MENSAJES DE ESTADO
+═══════════════════════════════════════════════════════════════════════════ */
+
+.msg-error {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #f85149;
+    -fx-font-weight: bold;
+}
+
+.msg-exito {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #3fb950;
+    -fx-font-weight: bold;
+}
+
+.msg-intentos {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #388bfd;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NÚMEROS DEL RETO
+═══════════════════════════════════════════════════════════════════════════ */
+
+.numero-reto {
+    -fx-font-family: "Impact", "Arial Black", sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #f0a500;
+    -fx-min-width: 42;
+    -fx-alignment: center-right;
+}
+
+.flecha-reto {
+    -fx-font-size: 14px;
+    -fx-text-fill: #8b949e;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PANTALLA DE RESULTADO
+═══════════════════════════════════════════════════════════════════════════ */
+
+.puntaje {
+    -fx-font-family: "Impact", "Arial Black", sans-serif;
+    -fx-font-size: 34px;
+    -fx-text-fill: #f0a500;
+    -fx-effect: dropshadow(gaussian, #f0a50066, 10, 0.4, 0, 2);
+}
+
+.nivel-info {
+    -fx-font-family: "Trebuchet MS", Tahoma, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #8b949e;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEPARADORES
+═══════════════════════════════════════════════════════════════════════════ */
+
+.separador > .line {
+    -fx-border-color: #21262d;
+    -fx-border-width: 1 0 0 0;
+}

@@ -6,102 +6,149 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import poli.edu.co.App;
-import poli.edu.co.modelo.JuegoModelo;
+import poli.edu.co.modelo.Partida;
 
 import java.io.IOException;
 
 /**
  * Controlador de la pantalla de juego.
- * Solo gestiona eventos de UI y delega toda la lógica a JuegoModelo.
- * Cuando la partida termina (victoria o derrota), navega a Resultado.fxml.
+ *
+ * Responsabilidades (MVC — capa Controlador):
+ *  - Capturar acciones del usuario (botones, campos de texto).
+ *  - Delegar la lógica al modelo ({@link Partida}).
+ *  - Actualizar la vista con los resultados recibidos.
+ *
+ * Principio: NO contiene lógica de negocio ni cálculos.
+ * Los mensajes de UI se construyen aquí a partir del estado del modelo.
  */
 public class JuegoControlador {
 
     // ── Fase 1: Exploración ──────────────────────────────────────────────────
+    @FXML private VBox      exploracionPane;
     @FXML private TextField inputUsuario;
     @FXML private Label     outputSistema;
+    @FXML private Label     errorInputLabel;        // Validación: campo no numérico
     @FXML private Label     mensajeExploracionLabel;
     @FXML private Button    btnYaConozcoLaRegla;
-    @FXML private VBox      exploracionPane;
 
     // ── Fase 2: Validación ───────────────────────────────────────────────────
-    @FXML private TextField reglaField;
+    @FXML private VBox      validacionPane;
     @FXML private Label     intentosLabel;
     @FXML private Label     mensajeValidacionLabel;
     @FXML private Label     n1Label, n2Label, n3Label, n4Label;
-    @FXML private TextField r1Field,  r2Field,  r3Field,  r4Field;
+    @FXML private TextField r1Field, r2Field, r3Field, r4Field;
+    @FXML private TextField reglaField;
     @FXML private Button    btnVolverExplorar;
-    @FXML private VBox      validacionPane;
 
     // ── Global ───────────────────────────────────────────────────────────────
     @FXML private Button btnVolverMenu;
 
-    private JuegoModelo modelo;
+    private Partida partida;
 
     // ── Inicialización ───────────────────────────────────────────────────────
 
     @FXML
     private void initialize() {
-        modelo = App.getModelo();
-        actualizarVista();
+        partida = App.getPartida();
+        // Mensajes iniciales: responsabilidad del controlador, no del modelo
+        outputSistema.setText("");
+        mensajeExploracionLabel.setText(
+            "Ingresa números enteros y observa la salida del sistema.");
+        mensajeValidacionLabel.setText("");
+        errorInputLabel.setVisible(false);
+        errorInputLabel.setManaged(false);
+        actualizarPaneles();
     }
 
-    // ── Sincronización de vista ──────────────────────────────────────────────
+    // ── Sincronización estructural de la vista ───────────────────────────────
 
-    private void actualizarVista() {
-        boolean enValidacion = modelo.isModoValidacion();
+    /**
+     * Actualiza la visibilidad de paneles y etiquetas de estado
+     * basándose en el estado del modelo.
+     * No genera mensajes propios: eso lo hacen los métodos de evento.
+     */
+    private void actualizarPaneles() {
+        boolean enValidacion = partida.isModoValidacion();
 
         exploracionPane.setVisible(!enValidacion);
         exploracionPane.setManaged(!enValidacion);
         validacionPane.setVisible(enValidacion);
         validacionPane.setManaged(enValidacion);
 
-        outputSistema.setText(modelo.getUltimaSalida());
-        mensajeExploracionLabel.setText(modelo.getMensajeExploracion());
-        intentosLabel.setText("Intentos restantes: " + modelo.getIntentosRestantes());
-        mensajeValidacionLabel.setText(modelo.getMensajeValidacion());
-
-        int[] entradas = modelo.getEntradasReto();
-        n1Label.setText(String.valueOf(entradas[0]));
-        n2Label.setText(String.valueOf(entradas[1]));
-        n3Label.setText(String.valueOf(entradas[2]));
-        n4Label.setText(String.valueOf(entradas[3]));
-
-        btnVolverExplorar.setVisible(enValidacion);
-        btnVolverExplorar.setManaged(enValidacion);
         btnYaConozcoLaRegla.setVisible(!enValidacion);
         btnYaConozcoLaRegla.setManaged(!enValidacion);
+        btnVolverExplorar.setVisible(enValidacion);
+        btnVolverExplorar.setManaged(enValidacion);
+
+        if (enValidacion) {
+            intentosLabel.setText("Intentos restantes: " + partida.getIntentosRestantes());
+            int[] entradas = partida.getEntradasReto();
+            n1Label.setText(String.valueOf(entradas[0]));
+            n2Label.setText(String.valueOf(entradas[1]));
+            n3Label.setText(String.valueOf(entradas[2]));
+            n4Label.setText(String.valueOf(entradas[3]));
+        }
     }
 
     // ── Eventos: Fase 1 ──────────────────────────────────────────────────────
 
     @FXML
     private void probarNumero() {
-        try {
-            int n   = Integer.parseInt(inputUsuario.getText().trim());
-            int res = modelo.aplicarRegla(n);
-            modelo.setUltimaSalida("Salida: " + res);
-            actualizarVista();
-        } catch (NumberFormatException e) {
-            mensajeExploracionLabel.setText("Número inválido. Ingresa un entero.");
+        String texto = inputUsuario.getText().trim();
+
+        // Validación de entrada: campo vacío o no numérico
+        if (texto.isEmpty()) {
+            mostrarErrorInput("Debes ingresar un número.");
+            return;
         }
+
+        try {
+            int n   = Integer.parseInt(texto);
+            int res = partida.aplicarRegla(n);                        // lógica en modelo
+
+            // Entrada válida: ocultar error, mostrar resultado
+            ocultarErrorInput();
+            outputSistema.setText("f(" + n + ")  =  " + res);        // texto en controlador
+            mensajeExploracionLabel.setText(
+                "Sigue probando o pasa a la fase de validación.");
+
+        } catch (NumberFormatException e) {
+            mostrarErrorInput("Debes ingresar un número entero válido.");
+        }
+    }
+
+    /** Muestra el label de error de entrada con el mensaje indicado. */
+    private void mostrarErrorInput(String mensaje) {
+        errorInputLabel.setText(mensaje);
+        errorInputLabel.setVisible(true);
+        errorInputLabel.setManaged(true);
+        outputSistema.setText("");
+    }
+
+    /** Oculta el label de error de entrada. */
+    private void ocultarErrorInput() {
+        errorInputLabel.setVisible(false);
+        errorInputLabel.setManaged(false);
     }
 
     @FXML
     private void yaConozcoLaRegla() {
-        modelo.iniciarModoValidacion();
-        actualizarVista();
+        partida.iniciarModoValidacion();                               // lógica en modelo
+        actualizarPaneles();
+        mensajeValidacionLabel.setText(
+            "Da las 4 salidas correctas o escribe la regla. "
+            + "Intentos: " + partida.getIntentosRestantes());
     }
 
     // ── Eventos: Fase 2 ──────────────────────────────────────────────────────
 
     @FXML
     private void validar() throws IOException {
-        if (modelo.isTerminado()) return;
+        if (partida.isTerminada()) return;
 
-        // Opción A: el jugador escribió la regla en texto
-        if (modelo.verificarTextoRegla(reglaField.getText())) {
-            modelo.ganar();
+        // Opción A: el jugador escribió la expresión de la regla
+        if (partida.verificarExpresion(reglaField.getText())) {
+            partida.ganar();                                           // lógica en modelo
             App.setRoot("Resultado");
             return;
         }
@@ -115,27 +162,33 @@ public class JuegoControlador {
                 Integer.parseInt(r4Field.getText().trim())
             };
 
-            if (modelo.verificarSalidas(respuestas)) {
-                modelo.ganar();
+            if (partida.verificarSalidas(respuestas)) {
+                partida.ganar();                                       // lógica en modelo
                 App.setRoot("Resultado");
             } else {
-                modelo.registrarIntentoFallido();
-                if (modelo.isTerminado()) {
-                    App.setRoot("Resultado");   // perdió → ir a pantalla de resultado
+                boolean perdio = partida.registrarIntentoFallido();    // lógica en modelo
+                if (perdio) {
+                    App.setRoot("Resultado");
                 } else {
-                    actualizarVista();          // aún quedan intentos
+                    // Construye el mensaje en el controlador con datos del modelo
+                    mensajeValidacionLabel.setText(
+                        "Incorrecto. Intentos restantes: " + partida.getIntentosRestantes());
+                    intentosLabel.setText(
+                        "Intentos restantes: " + partida.getIntentosRestantes());
                 }
             }
-
         } catch (NumberFormatException e) {
-            mensajeValidacionLabel.setText("Completa todos los campos con números enteros.");
+            mensajeValidacionLabel.setText(
+                "⚠  Completa todos los campos con números enteros.");
         }
     }
 
     @FXML
     private void volverExplorar() {
-        modelo.volverExploracion();
-        actualizarVista();
+        partida.volverExploracion();                                   // lógica en modelo
+        ocultarErrorInput();
+        actualizarPaneles();
+        mensajeExploracionLabel.setText("Sigue probando para encontrar más pistas.");
     }
 
     // ── Eventos: Global ──────────────────────────────────────────────────────

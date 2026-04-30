@@ -5,35 +5,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="25"
+<VBox alignment="CENTER" spacing="28"
       xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="poli.edu.co.controlador.MenuControlador"
-      style="-fx-background-color: #1a2332;"
+      styleClass="pantalla"
       prefWidth="660" prefHeight="520">
 
    <children>
 
       <Label text="Adivina la Regla"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #f9a825;"/>
+             styleClass="titulo"/>
 
       <Label text="Descubre el patrón matemático oculto"
-             style="-fx-font-family: 'Times New Roman'; -fx-font-size: 12px; -fx-text-fill: #b0bec5;"/>
+             styleClass="subtitulo"/>
 
-      <Button text="Iniciar Partida"
+      <Button text="▶  Iniciar Partida"
               onAction="#iniciarPartida"
-              prefWidth="200"
-              style="-fx-background-color: #2e7d32; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 9 18; -fx-background-radius: 5;"/>
+              prefWidth="230"
+              styleClass="btn-inicio"/>
 
-      <Button text="Ver Reglas"
+      <Button text="Ver Reglas del Juego"
               onAction="#abrirReglas"
-              prefWidth="180"
-              style="-fx-background-color: #1565c0; -fx-text-fill: #eceff1; -fx-font-family: 'Times New Roman'; -fx-font-size: 13px; -fx-padding: 8 16; -fx-background-radius: 5;"/>
+              prefWidth="200"
+              styleClass="btn-accion"/>
 
    </children>
 
    <padding>
-      <Insets top="60" bottom="60" left="80" right="80"/>
+      <Insets top="70" bottom="70" left="80" right="80"/>
    </padding>
 
 </VBox>
