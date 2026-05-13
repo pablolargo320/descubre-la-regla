@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="28"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="poli.edu.co.controlador.MenuControlador"
+      styleClass="pantalla"
+      prefWidth="660" prefHeight="520">
+
+   <children>
+
+      <Label text="Adivina la Regla"
+             styleClass="titulo"/>
+
+      <Label text="Descubre el patrón matemático oculto"
+             styleClass="subtitulo"/>
+
+      <Button text="▶  Iniciar Partida"
+              onAction="#iniciarPartida"
+              prefWidth="230"
+              styleClass="btn-inicio"/>
+
+      <Button text="Ver Reglas del Juego"
+              onAction="#abrirReglas"
+              prefWidth="200"
+              styleClass="btn-accion"/>
+
+   </children>
+
+   <padding>
+      <Insets top="70" bottom="70" left="80" right="80"/>
+   </padding>
+
+</VBox>

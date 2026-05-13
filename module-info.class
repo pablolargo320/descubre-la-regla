@@ -1,0 +1,222 @@
+package poli.edu.co.modelo;
+
+import poli.edu.co.modelo.dao.JugadorDAO;
+
+import java.util.Random;
+
+/**
+ * Modelo principal de una sesión de juego.
+ *
+ * <p>Gestiona todo el estado de la partida activa: modo (exploración /
+ * validación), intentos disponibles, reto de 4 números y resultado final.
+ * También delega la persistencia del jugador al {@link JugadorDAO}
+ * inyectado en el constructor.</p>
+ *
+ * <h3>Ciclo de vida</h3>
+ * <ol>
+ *   <li>Creación: {@code new Partida(dao)} — inicializa sin nivel.</li>
+ *   <li>Inicio:   {@code iniciarConNivel(nivel, regla)} — configura la partida.</li>
+ *   <li>Fase 1:   {@code aplicarRegla(x)} — exploración libre.</li>
+ *   <li>Fase 2:   {@code iniciarModoValidacion()} + {@code verificar*()} —
+ *       verificación con límite de intentos.</li>
+ *   <li>Fin:      {@code ganar()} o {@code registrarIntentoFallido()} que agota intentos.</li>
+ *   <li>Guardado: {@code guardarJugador(jugador)} — persiste el resultado.</li>
+ * </ol>
+ *
+ * <p><strong>MVC:</strong> esta clase no contiene referencias a JavaFX,
+ * Labels ni lógica de interfaz.</p>
+ */
+public class Partida {
+
+    /** Número máximo de intentos permitidos en la fase de validación. */
+    public static final int MAX_INTENTOS = 3;
+
+    private static final Random RANDOM = new Random();
+
+    // ── Regla activa ──────────────────────────────────────────────────────────
+    private Nivel nivel;
+    private Regla regla;
+
+    // ── Estado de la sesión ───────────────────────────────────────────────────
+    private boolean modoValidacion;
+    private boolean terminada;
+    private boolean ganada;
+    private int     intentosRestantes;
+
+    // ── Reto de validación ────────────────────────────────────────────────────
+    private final int[] entradasReto = new int[4];
+    private boolean     retoGenerado;
+
+    // ── Puntaje ───────────────────────────────────────────────────────────────
+    private Puntaje puntaje;
+
+    // ── Persistencia (inyectada, nunca instanciada aquí) ─────────────────────
+    private final JugadorDAO jugadorDAO;
+
+    /**
+     * Crea una nueva Partida con el DAO de persistencia inyectado.
+     *
+     * <p>El nivel se configura posteriormente con {@link #iniciarConNivel(Nivel, Regla)}.</p>
+     *
+     * @param jugadorDAO implementación DAO para guardar resultados;
+     *                   debe ser instanciada por el controlador o {@code App}.
+     */
+    public Partida(JugadorDAO jugadorDAO) {
+        if (jugadorDAO == null) throw new IllegalArgumentException("JugadorDAO no puede ser nulo.");
+        this.jugadorDAO        = jugadorDAO;
+        this.intentosRestantes = MAX_INTENTOS;
+        this.puntaje           = Puntaje.cero();
+    }
+
+    // ── Ciclo de vida ─────────────────────────────────────────────────────────
+
+    /**
+     * Configura la partida con el nivel y la regla seleccionados por el jugador.
+     * Reinicia todo el estado para empezar desde cero.
+     *
+     * @param nivel nivel de dificultad elegido.
+     * @param regla regla matemática asociada al nivel.
+     */
+    public void iniciarConNivel(Nivel nivel, Regla regla) {
+        this.nivel = nivel;
+        this.regla = regla;
+        reiniciarEstado();
+    }
+
+    private void reiniciarEstado() {
+        modoValidacion    = false;
+        terminada         = false;
+        ganada            = false;
+        intentosRestantes = MAX_INTENTOS;
+        retoGenerado      = false;
+        puntaje           = Puntaje.cero();
+    }
+
+    // ── Lógica de juego ───────────────────────────────────────────────────────
+
+    /**
+     * Aplica la regla matemática del nivel al número dado (Fase 1 — Exploración).
+     *
+     * @param x número entero ingresado por el jugador.
+     * @return resultado de la función matemática.
+     */
+    public int aplicarRegla(int x) {
+        return regla.aplicar(x);
+    }
+
+    /**
+     * Cambia al modo validación y genera el reto de 4 números aleatorios
+     * (solo la primera vez que se entra a validación).
+     */
+    public void iniciarModoValidacion() {
+        modoValidacion = true;
+        if (!retoGenerado) {
+            for (int i = 0; i < 4; i++) {
+                entradasReto[i] = RANDOM.nextInt(9) + 1;
+            }
+            retoGenerado = true;
+        }
+    }
+
+    /**
+     * Regresa al modo exploración sin reiniciar los intentos disponibles.
+     */
+    public void volverExploracion() {
+        modoValidacion = false;
+    }
+
+    /**
+     * Verifica si el texto escrito por el jugador coincide con la expresión
+     * de la regla (ignorando espacios y mayúsculas).
+     *
+     * @param texto cadena ingresada por el jugador.
+     * @return {@code true} si coincide con la regla correcta.
+     */
+    public boolean verificarExpresion(String texto) {
+        return regla.verificarExpresion(texto);
+    }
+
+    /**
+     * Verifica si las 4 salidas ingresadas corresponden a los resultados
+     * correctos para cada entrada del reto.
+     *
+     * @param respuestas arreglo de 4 enteros con las salidas propuestas.
+     * @return {@code true} si todas las respuestas son correctas.
+     */
+    public boolean verificarSalidas(int[] respuestas) {
+        if (respuestas == null || respuestas.length < 4) return false;
+        for (int i = 0; i < 4; i++) {
+            if (respuestas[i] != regla.aplicar(entradasReto[i])) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Registra un intento fallido y marca la partida como terminada
+     * si se agotaron todos los intentos.
+     *
+     * @return {@code true} si el jugador perdió (intentos agotados),
+     *         {@code false} si aún quedan intentos.
+     */
+    public boolean registrarIntentoFallido() {
+        intentosRestantes--;
+        if (intentosRestantes <= 0) {
+            terminada = true;
+            puntaje   = Puntaje.cero();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Marca la partida como ganada, calcula el puntaje final y la termina.
+     */
+    public void ganar() {
+        terminada = true;
+        ganada    = true;
+        puntaje   = Puntaje.calcular(intentosRestantes, true);
+    }
+
+    // ── Persistencia ──────────────────────────────────────────────────────────
+
+    /**
+     * Persiste el jugador usando el DAO inyectado.
+     *
+     * <p>El objeto {@link Jugador} debe ser construido por el controlador
+     * antes de llamar a este método.</p>
+     *
+     * @param jugador entidad con el nombre, puntaje y nivel del jugador.
+     * @throws IllegalArgumentException si el jugador es {@code null}.
+     * @throws RuntimeException         si ocurre un error de persistencia.
+     */
+    public void guardarJugador(Jugador jugador) {
+        if (jugador == null) throw new IllegalArgumentException("El jugador no puede ser nulo.");
+        jugadorDAO.guardar(jugador);
+    }
+
+    // ── Getters ───────────────────────────────────────────────────────────────
+
+    /** @return {@code true} si la partida está en modo validación. */
+    public boolean isModoValidacion()     { return modoValidacion; }
+
+    /** @return {@code true} si la partida ha finalizado. */
+    public boolean isTerminada()          { return terminada; }
+
+    /** @return {@code true} si el jugador ganó. */
+    public boolean isGanada()             { return ganada; }
+
+    /** @return intentos disponibles restantes en la fase de validación. */
+    public int     getIntentosRestantes() { return intentosRestantes; }
+
+    /** @return arreglo de 4 números de entrada del reto de validación. */
+    public int[]   getEntradasReto()      { return entradasReto; }
+
+    /** @return nivel de dificultad activo. */
+    public Nivel   getNivel()             { return nivel; }
+
+    /** @return puntaje calculado al final de la partida. */
+    public Puntaje getPuntaje()           { return puntaje; }
+
+    /** @return expresión textual de la regla activa (ej.: {@code "x * 2"}). */
+    public String  getExpresionRegla()    { return regla.getExpresion(); }
+}

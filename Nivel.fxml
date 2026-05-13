@@ -1,0 +1,29 @@
+package poli.edu.co.modelo.dao;
+
+import poli.edu.co.modelo.Jugador;
+import java.util.List;
+
+/**
+ * Contrato de acceso a datos para la entidad {@link poli.edu.co.modelo.Jugador}.
+ *
+ * <p>Siguiendo el principio de Inversión de Dependencias (DIP),
+ * el resto del código depende de esta interfaz y no de su implementación
+ * concreta. Esto permite cambiar el motor de base de datos (SQLite, MySQL,
+ * H2, etc.) sin modificar los controladores ni el modelo.</p>
+ */
+public interface JugadorDAO {
+
+    /**
+     * Persiste un jugador y rellena su {@code id} con el valor generado.
+     *
+     * @param jugador entidad a guardar; no debe ser {@code null}.
+     */
+    void guardar(Jugador jugador);
+
+    /**
+     * Devuelve los 10 mejores puntajes en orden descendente.
+     *
+     * @return lista con hasta 10 jugadores; nunca {@code null}.
+     */
+    List<Jugador> obtenerTop10();
+}

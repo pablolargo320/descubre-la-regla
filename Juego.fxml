@@ -1,0 +1,66 @@
+package poli.edu.co.modelo.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/**
+ * Gestiona la conexión con la base de datos SQLite embebida.
+ *
+ * <p>Usa SQLite en lugar de MySQL para eliminar la dependencia de un
+ * servidor externo: el archivo {@code adivinaRegla.db} se crea
+ * automáticamente en el directorio de trabajo al primer arranque.</p>
+ *
+ * <p>Cada llamada a {@link #getConexion()} devuelve una conexión nueva
+ * (patrón <em>connection per use</em>), adecuado para una aplicación
+ * de escritorio de usuario único. El cierre de la conexión es
+ * responsabilidad del bloque {@code try-with-resources} del llamador.</p>
+ *
+ * <p>Esta clase es utilitaria (constructor privado) y no puede instanciarse.</p>
+ */
+public final class ConexionBD {
+
+    /** URL de conexión JDBC para la base de datos SQLite embebida. */
+    private static final String URL = "jdbc:sqlite:adivinaRegla.db";
+
+    private ConexionBD() { }
+
+    /**
+     * Abre y retorna una nueva conexión a la base de datos.
+     *
+     * <p>El driver SQLite se registra automáticamente mediante el mecanismo
+     * de {@code ServiceLoader} de JDBC 4.0+, por lo que no se requiere
+     * {@code Class.forName()}.</p>
+     *
+     * @return conexión activa; debe cerrarse con {@code try-with-resources}.
+     * @throws SQLException si no se puede establecer la conexión.
+     */
+    public static Connection getConexion() throws SQLException {
+        return DriverManager.getConnection(URL);
+    }
+
+    /**
+     * Crea la tabla {@code jugadores} si no existe.
+     * Debe llamarse una sola vez al iniciar la aplicación (desde {@code App}).
+     *
+     * @throws RuntimeException si ocurre un error al ejecutar el DDL.
+     */
+    public static void inicializarTablas() {
+        String sql = """
+                CREATE TABLE IF NOT EXISTS jugadores (
+                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nombre  TEXT    NOT NULL,
+                    puntaje INTEGER NOT NULL,
+                    nivel   TEXT    NOT NULL,
+                    fecha   TEXT    NOT NULL
+                )
+                """;
+        try (Connection conn = getConexion();
+             Statement  stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al inicializar la base de datos: " + e.getMessage(), e);
+        }
+    }
+}

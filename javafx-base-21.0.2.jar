@@ -1,0 +1,257 @@
+/* ═══════════════════════════════════════════════════════════════
+   game-style.css  |  Adivina la Regla
+   Tema oscuro inspirado en GitHub Dark
+   ═══════════════════════════════════════════════════════════════
+   Paleta:
+     Fondo pantalla : #0d1117
+     Superficie card: #161b22
+     Borde          : #30363d
+     Texto principal: #c9d1d9
+     Texto hint     : #8b949e
+     Dorado/Título  : #f0a500
+     Verde éxito    : #3fb950
+     Azul acción    : #388bfd
+     Rojo error     : #f85149
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Pantalla base ──────────────────────────────────────────── */
+.pantalla {
+    -fx-background-color: #0d1117;
+    -fx-alignment: CENTER;
+}
+
+/* ─── Tipografía ─────────────────────────────────────────────── */
+.titulo {
+    -fx-font-family: 'Impact', 'Arial Black', 'Arial';
+    -fx-font-size: 28px;
+    -fx-text-fill: #f0a500;
+}
+
+.titulo-resultado {
+    -fx-font-family: 'Impact', 'Arial Black', 'Arial';
+    -fx-font-size: 22px;
+    -fx-text-fill: #f0a500;
+}
+
+.titulo-fase {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #388bfd;
+}
+
+.subtitulo {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-text-fill: #8b949e;
+}
+
+.texto {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 12px;
+    -fx-text-fill: #8b949e;
+}
+
+.texto-hint {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+    -fx-text-fill: #8b949e;
+}
+
+.texto-salida {
+    -fx-font-family: 'Courier New', 'Monospaced';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3fb950;
+}
+
+.numero-reto {
+    -fx-font-family: 'Courier New', 'Monospaced';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f0a500;
+    -fx-min-width: 40px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.flecha-reto {
+    -fx-font-size: 16px;
+    -fx-text-fill: #8b949e;
+}
+
+.puntaje {
+    -fx-font-family: 'Impact', 'Arial Black', 'Arial';
+    -fx-font-size: 30px;
+    -fx-text-fill: #f0a500;
+}
+
+.nivel-info {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-text-fill: #8b949e;
+}
+
+/* ─── Mensajes de estado ─────────────────────────────────────── */
+.msg-error {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 12px;
+    -fx-text-fill: #f85149;
+}
+
+.msg-exito {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 12px;
+    -fx-text-fill: #3fb950;
+}
+
+.msg-intentos {
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #388bfd;
+}
+
+/* ─── Tarjeta (card) ─────────────────────────────────────────── */
+.card {
+    -fx-background-color: #161b22;
+    -fx-background-radius: 8;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+/* ─── Separador ──────────────────────────────────────────────── */
+.separador {
+    -fx-background-color: #30363d;
+}
+
+/* ─── Campo de texto ─────────────────────────────────────────── */
+.campo-texto {
+    -fx-background-color: #0a0e1a;
+    -fx-text-fill: #c9d1d9;
+    -fx-prompt-text-fill: #8b949e;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-padding: 6 10;
+}
+
+.campo-texto:focused {
+    -fx-border-color: #388bfd;
+}
+
+/* ─── Botones ────────────────────────────────────────────────── */
+.btn-inicio {
+    -fx-background-color: #1a7f37;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 2);
+}
+.btn-inicio:hover { -fx-background-color: #2ea043; }
+.btn-inicio:pressed { -fx-background-color: #116329; }
+
+.btn-accion {
+    -fx-background-color: #1f6feb;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 2);
+}
+.btn-accion:hover { -fx-background-color: #388bfd; }
+.btn-accion:pressed { -fx-background-color: #1158c7; }
+
+.btn-probar {
+    -fx-background-color: #9e6a03;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-probar:hover {
+    -fx-background-color: #f0a500;
+    -fx-text-fill: #0d1117;
+}
+
+.btn-oro {
+    -fx-background-color: #f0a500;
+    -fx-text-fill: #0d1117;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-oro:hover { -fx-background-color: #ffc72c; }
+.btn-oro:pressed { -fx-background-color: #b07800; }
+
+.btn-exito {
+    -fx-background-color: #238636;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-exito:hover {
+    -fx-background-color: #3fb950;
+    -fx-text-fill: #0d1117;
+}
+
+.btn-neutro {
+    -fx-background-color: #21262d;
+    -fx-text-fill: #c9d1d9;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 12px;
+    -fx-padding: 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.btn-neutro:hover {
+    -fx-background-color: #30363d;
+    -fx-border-color: #8b949e;
+}
+
+.btn-peligro {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-peligro:hover { -fx-background-color: #f85149; }
+
+.btn-intermedio {
+    -fx-background-color: #1f6feb;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Trebuchet MS', 'Tahoma', 'Arial';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.btn-intermedio:hover { -fx-background-color: #388bfd; }

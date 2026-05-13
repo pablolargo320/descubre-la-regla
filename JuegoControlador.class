@@ -1,0 +1,65 @@
+package poli.edu.co.modelo;
+
+/**
+ * Objeto de valor inmutable que encapsula el puntaje de una partida.
+ *
+ * <p>Fórmula: {@code 1000 - (intentos_fallidos × 300)}</p>
+ * <ul>
+ *   <li>0 fallos  → 1 000 pts</li>
+ *   <li>1 fallo   →   700 pts</li>
+ *   <li>2 fallos  →   400 pts</li>
+ *   <li>Derrota   →     0 pts</li>
+ * </ul>
+ *
+ * <p>Las instancias se crean mediante los métodos de fábrica
+ * {@link #calcular(int, boolean)} y {@link #cero()};
+ * el constructor privado impide mutaciones externas.</p>
+ */
+public final class Puntaje {
+
+    /** Puntuación máxima posible (sin ningún fallo). */
+    public static final int PUNTAJE_BASE            = 1000;
+
+    /** Descuento aplicado por cada intento fallido. */
+    public static final int DESCUENTO_POR_INTENTO   = 300;
+
+    /** Valor numérico del puntaje. */
+    private final int valor;
+
+    private Puntaje(int valor) {
+        this.valor = valor;
+    }
+
+    /**
+     * Calcula el puntaje según los intentos restantes y el resultado final.
+     *
+     * @param intentosRestantes intentos que le sobraron al jugador al terminar.
+     * @param gano              {@code true} si el jugador ganó la partida.
+     * @return instancia de {@code Puntaje} con el valor calculado.
+     */
+    public static Puntaje calcular(int intentosRestantes, boolean gano) {
+        if (!gano) return new Puntaje(0);
+        int fallos = Partida.MAX_INTENTOS - intentosRestantes;
+        int puntos = Math.max(0, PUNTAJE_BASE - fallos * DESCUENTO_POR_INTENTO);
+        return new Puntaje(puntos);
+    }
+
+    /**
+     * Retorna un puntaje de cero (partida no terminada o perdida).
+     *
+     * @return instancia con valor 0.
+     */
+    public static Puntaje cero() {
+        return new Puntaje(0);
+    }
+
+    /**
+     * Retorna el valor numérico del puntaje.
+     *
+     * @return puntos obtenidos.
+     */
+    public int getValor() { return valor; }
+
+    @Override
+    public String toString() { return valor + " pts"; }
+}

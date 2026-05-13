@@ -1,0 +1,62 @@
+package poli.edu.co.modelo;
+
+/**
+ * Enumeración de los niveles de dificultad del juego.
+ *
+ * <p>Cada constante define la función matemática que transforma
+ * el número ingresado por el jugador. La lógica de verificación
+ * de expresiones se delega a {@link Regla} (SRP).</p>
+ *
+ * <ul>
+ *   <li>{@code FACIL}      — regla: {@code x * 2}</li>
+ *   <li>{@code INTERMEDIO} — regla: {@code x * 2 + 5}</li>
+ *   <li>{@code DIFICIL}    — regla: {@code x^2 + 10}</li>
+ * </ul>
+ */
+public enum Nivel {
+
+    /** Regla sencilla: multiplica la entrada por 2. */
+    FACIL("x * 2") {
+        @Override
+        public int aplicar(int x) { return x * 2; }
+    },
+
+    /** Regla intermedia: duplica y suma 5. */
+    INTERMEDIO("x * 2 + 5") {
+        @Override
+        public int aplicar(int x) { return x * 2 + 5; }
+    },
+
+    /** Regla difícil: eleva al cuadrado y suma 10. */
+    DIFICIL("x^2 + 10") {
+        @Override
+        public int aplicar(int x) { return (x * x) + 10; }
+    };
+
+    /** Representación textual de la regla, mostrada al revelar la solución. */
+    private final String expresion;
+
+    /**
+     * Constructor del enum.
+     *
+     * @param expresion cadena que describe la fórmula matemática.
+     */
+    Nivel(String expresion) {
+        this.expresion = expresion;
+    }
+
+    /**
+     * Aplica la función matemática del nivel al número dado.
+     *
+     * @param x número entero de entrada.
+     * @return resultado de la transformación.
+     */
+    public abstract int aplicar(int x);
+
+    /**
+     * Retorna la expresión legible de la regla (ej.: {@code "x * 2 + 5"}).
+     *
+     * @return cadena con la expresión matemática.
+     */
+    public String getExpresion() { return expresion; }
+}

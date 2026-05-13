@@ -1,0 +1,75 @@
+package poli.edu.co.modelo;
+
+import java.time.LocalDateTime;
+
+/**
+ * Entidad que representa a un jugador y su resultado en una partida.
+ *
+ * <p>Contiene únicamente datos (nombre, puntaje, nivel y fecha):
+ * no tiene lógica de negocio ni acceso a base de datos.</p>
+ *
+ * <p>Las instancias son creadas por {@code ResultadoControlador}
+ * (controlador) y persistidas vía {@code Partida#guardarJugador(Jugador)}
+ * que delega en el DAO.</p>
+ */
+public class Jugador {
+
+    /** Identificador generado por la base de datos (0 antes de persistir). */
+    private int id;
+
+    /** Nombre ingresado por el jugador. */
+    private final String nombre;
+
+    /** Puntaje obtenido al finalizar la partida. */
+    private final int puntaje;
+
+    /** Nombre del nivel jugado (FACIL, INTERMEDIO, DIFICIL). */
+    private final String nivel;
+
+    /** Marca temporal del momento en que finalizó la partida. */
+    private final LocalDateTime fecha;
+
+    /**
+     * Crea un Jugador con los datos de una partida terminada.
+     *
+     * @param nombre  nombre del jugador; no debe ser nulo ni vacío.
+     * @param puntaje puntos obtenidos.
+     * @param nivel   nombre del nivel jugado.
+     */
+    public Jugador(String nombre, int puntaje, String nivel) {
+        this.nombre  = nombre;
+        this.puntaje = puntaje;
+        this.nivel   = nivel;
+        this.fecha   = LocalDateTime.now();
+    }
+
+    // ── Getters ───────────────────────────────────────────────────────────────
+
+    /** @return identificador de base de datos (0 si aún no persistido). */
+    public int getId()           { return id; }
+
+    /** @return nombre del jugador. */
+    public String getNombre()    { return nombre; }
+
+    /** @return puntaje obtenido en la partida. */
+    public int getPuntaje()      { return puntaje; }
+
+    /** @return nombre del nivel jugado. */
+    public String getNivel()     { return nivel; }
+
+    /** @return fecha y hora de finalización de la partida. */
+    public LocalDateTime getFecha() { return fecha; }
+
+    /**
+     * Establece el identificador asignado por la base de datos
+     * tras la inserción del registro.
+     *
+     * @param id identificador generado (AUTO_INCREMENT).
+     */
+    public void setId(int id)    { this.id = id; }
+
+    @Override
+    public String toString() {
+        return nombre + " — " + puntaje + " pts [" + nivel + "]";
+    }
+}

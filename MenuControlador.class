@@ -1,0 +1,70 @@
+package poli.edu.co.modelo;
+
+/**
+ * Encapsula la regla matemática asociada a un {@link Nivel} de juego.
+ *
+ * <p>Separa la lógica de verificación de expresiones del enum {@code Nivel},
+ * que solo define cómo aplicar la función. Así cada responsabilidad
+ * tiene su clase propia (Single Responsibility Principle).</p>
+ *
+ * <p>Instancias de esta clase son creadas en el controlador
+ * {@code NivelControlador} y pasadas al modelo {@code Partida}
+ * mediante {@code iniciarConNivel()}, nunca dentro del modelo.</p>
+ */
+public class Regla {
+
+    /** Nivel de dificultad que define la función matemática. */
+    private final Nivel nivel;
+
+    /**
+     * Crea una Regla asociada al nivel indicado.
+     *
+     * @param nivel nivel de dificultad; no debe ser {@code null}.
+     */
+    public Regla(Nivel nivel) {
+        if (nivel == null) throw new IllegalArgumentException("El nivel no puede ser nulo.");
+        this.nivel = nivel;
+    }
+
+    /**
+     * Aplica la regla matemática al número dado.
+     *
+     * @param x número entero de entrada.
+     * @return resultado de aplicar la función del nivel a {@code x}.
+     */
+    public int aplicar(int x) {
+        return nivel.aplicar(x);
+    }
+
+    /**
+     * Retorna la expresión legible de la regla (ej.: {@code "x * 2"}).
+     *
+     * @return cadena con la expresión matemática.
+     */
+    public String getExpresion() {
+        return nivel.getExpresion();
+    }
+
+    /**
+     * Verifica si el texto ingresado por el jugador coincide con la expresión
+     * de la regla, ignorando espacios y mayúsculas.
+     *
+     * @param texto cadena escrita por el jugador.
+     * @return {@code true} si el texto representa la regla correcta.
+     */
+    public boolean verificarExpresion(String texto) {
+        if (texto == null || texto.isBlank()) return false;
+        String normalTexto = texto.replace(" ", "").toLowerCase();
+        String normalRegla = nivel.getExpresion().replace(" ", "").toLowerCase();
+        return normalTexto.equals(normalRegla);
+    }
+
+    /**
+     * Retorna el nivel al que pertenece esta regla.
+     *
+     * @return nivel de dificultad asociado.
+     */
+    public Nivel getNivel() {
+        return nivel;
+    }
+}
